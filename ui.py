@@ -7,6 +7,10 @@ BOARD_SIZE = TILE_SIZE * 8
 game = None
 selected = None
 
+# COLORS (taken with shame directly from lichess :D)
+selected_color = (20, 85, 30, 127)
+last_move_color = (155, 199, 0, 105)
+
 def player_flip(x, y):
   if game.plr_color: # TRUE == WHITE
     return x, 7 - y
@@ -33,6 +37,17 @@ def mouse(e):
   elif e.type == pygame.MOUSEBUTTONDOWN:
     selected = sq
 
+def highlight_square(surface, sq, color):
+  x, y = player_flip(sq % 8, sq // 8)
+  rect = (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+  pygame.draw.rect(surface, color, rect)
+
+def highlight_circle(surface, sq, color):
+  x, y = player_flip(sq % 8, sq // 8)
+  center = ((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE)
+  pygame.draw.circle(surface, color, center, TILE_SIZE // 7) # Why 7? No idea...
+
+
 def render_loop():
   clock = pygame.time.Clock()
 
@@ -50,6 +65,22 @@ def render_loop():
 
     # RENDER BACKBOARD
     window.blit(resources.board, (0,0))
+
+    highlights = pygame.Surface(resources.board.get_size(), pygame.SRCALPHA)
+
+    # RENDER SELECTED
+    if selected:
+      highlight_square(highlights, selected, selected_color)
+      for mv in game.get_moves(selected):
+        highlight_circle(highlights, mv.to_square, selected_color)
+
+    # RENDER LAST MOVE
+    lm = game.last_move()
+    if lm:
+      highlight_square(highlights, lm.from_square, last_move_color)
+      highlight_square(highlights, lm.to_square, last_move_color)
+
+    window.blit(highlights, (0,0))
 
     # RENDER PIECES
     render_pieces(window)

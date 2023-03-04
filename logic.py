@@ -15,3 +15,10 @@ class game:
 
   def piece(self, sq):
     return self.board.piece_at(sq)
+
+  def last_move(self):
+    if len(self.board.move_stack):
+      return self.board.move_stack[-1]
+
+  def get_moves(self, sq):
+    return filter(lambda x: x.from_square == sq, self.board.legal_moves)
