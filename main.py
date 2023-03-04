@@ -1,7 +1,6 @@
-import chess
+from logic import game
 import ui
 
-board = chess.Board()
-ui.init(board)
-print('yay')
-board.push_san("e4")
+GAME = game()
+
+ui.init(GAME)
