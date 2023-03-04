@@ -11,7 +11,7 @@ class game:
     mv = chess.Move(start, end)
     if mv in self.board.legal_moves:
       self.board.push(mv)
-    self.plr_color = not self.plr_color # FOR 2-PLR GAMING
+      self.plr_color = not self.plr_color # FOR 2-PLR GAMING
 
   def piece(self, sq):
     return self.board.piece_at(sq)
