@@ -22,7 +22,16 @@ def render_pieces(window):
     p = game.piece(sq)
     if p:
       x, y = player_flip(sq % 8, sq // 8)
-      window.blit(resources.pieces[p.symbol()], (x * TILE_SIZE, y * TILE_SIZE))
+      icon = resources.pieces[p.symbol()]
+      if sq == selected and pygame.mouse.get_pressed()[0]:
+        transparent = icon.copy()
+        transparent.set_alpha(128)
+        window.blit(transparent, (x * TILE_SIZE, y * TILE_SIZE))
+        x, y = pygame.mouse.get_pos()
+        window.blit(icon, (x - TILE_SIZE // 2, y - TILE_SIZE // 3))
+      else:
+        window.blit(icon, (x * TILE_SIZE, y * TILE_SIZE))
+
 
 def mouse(e):
   global selected
@@ -82,15 +91,15 @@ def render_loop():
 
     window.blit(highlights, (0,0))
 
-    # RENDER PIECES
-    render_pieces(window)
-
     # RENDER CELL LABELS
     if True: # TODO: ADD CONFIG
       if game.plr_color:
         window.blit(resources.for_white, (0,0))
       else:
         window.blit(resources.for_black, (0,0))
+
+    # RENDER PIECES
+    render_pieces(window)
 
     # RENDER SCREEN
     pygame.display.flip()
