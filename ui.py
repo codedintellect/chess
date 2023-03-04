@@ -54,6 +54,13 @@ def render_loop():
     # RENDER PIECES
     render_pieces(window)
 
+    # RENDER CELL LABELS
+    if True: # TODO: ADD CONFIG
+      if game.plr_color:
+        window.blit(resources.for_white, (0,0))
+      else:
+        window.blit(resources.for_black, (0,0))
+
     # RENDER SCREEN
     pygame.display.flip()
 
