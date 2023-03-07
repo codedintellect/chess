@@ -24,14 +24,13 @@ def render_pieces(window):
       x, y = player_flip(sq % 8, sq // 8)
       icon = resources.pieces[p.symbol()]
       if sq == selected and pygame.mouse.get_pressed()[0]:
-        transparent = icon.copy()
-        transparent.set_alpha(128)
-        window.blit(transparent, (x * TILE_SIZE, y * TILE_SIZE))
-        x, y = pygame.mouse.get_pos()
-        window.blit(icon, (x - TILE_SIZE // 2, y - TILE_SIZE // 3))
-      else:
-        window.blit(icon, (x * TILE_SIZE, y * TILE_SIZE))
-
+        icon = icon.copy()
+        icon.set_alpha(128)
+      window.blit(icon, (x * TILE_SIZE, y * TILE_SIZE))
+  if selected is not None and pygame.mouse.get_pressed()[0]:
+    icon = resources.pieces[game.piece(selected).symbol()]
+    x, y = pygame.mouse.get_pos()
+    window.blit(icon, (x - TILE_SIZE // 2, y - TILE_SIZE // 3))
 
 def mouse(e):
   global selected
