@@ -55,11 +55,13 @@ def highlight_circle(surface, sq, color):
   center = ((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE)
   pygame.draw.circle(surface, color, center, TILE_SIZE // 7) # Why 7? No idea...
 
-
 def render_loop():
   clock = pygame.time.Clock()
 
   window = pygame.display.set_mode((BOARD_SIZE, BOARD_SIZE))
+
+  # Make Surface type match to avoid doing it each frame, causing high CPU usage.
+  resources.board = resources.board.convert()
 
   # GAME LOOP
   running = True
