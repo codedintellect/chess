@@ -9,6 +9,7 @@ selected = None
 # COLORS (taken with shame directly from lichess :D)
 selected_color = (20, 85, 30, 127)
 last_move_color = (155, 199, 0, 105)
+hover_color = (255, 255, 255, 127)
 
 def flip(x, y, game):
   if game.plr_color: # TRUE == WHITE
@@ -31,10 +32,10 @@ def render_pieces(window, game, selected):
     x, y = pygame.mouse.get_pos()
     window.blit(icon, (x - TILE_SIZE // 2, y - TILE_SIZE // 3))
 
-def highlight_square(surface, sq, color, game):
+def highlight_rect(surface, sq, color, game, width=0):
   x, y = flip(sq % 8, sq // 8, game)
   rect = (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
-  pygame.draw.rect(surface, color, rect)
+  pygame.draw.rect(surface, color, rect, width)
 
 def highlight_circle(surface, sq, color, game):
   x, y = flip(sq % 8, sq // 8, game)
@@ -47,17 +48,21 @@ def render(window, game, selected):
 
   highlights = pygame.Surface(resources.board.get_size(), pygame.SRCALPHA)
 
-  # RENDER SELECTED
-  if selected:
-    highlight_square(highlights, selected, selected_color, game)
-    for mv in game.get_moves(selected):
-      highlight_circle(highlights, mv.to_square, selected_color, game)
-
   # RENDER LAST MOVE
   lm = game.last_move()
   if lm:
-    highlight_square(highlights, lm.from_square, last_move_color, game)
-    highlight_square(highlights, lm.to_square, last_move_color, game)
+    highlight_rect(highlights, lm.from_square, last_move_color, game)
+    highlight_rect(highlights, lm.to_square, last_move_color, game)
+
+  # RENDER SELECTED
+  if selected:
+    highlight_rect(highlights, selected, selected_color, game)
+    for mv in game.get_moves(selected):
+      highlight_circle(highlights, mv.to_square, selected_color, game)
+    if pygame.mouse.get_pressed()[0]:
+      pos = pygame.mouse.get_pos()
+      x, y = flip(pos[0] // TILE_SIZE, pos[1] // TILE_SIZE, game)
+      highlight_rect(highlights, y * 8 + x, hover_color, game, TILE_SIZE // 16)
 
   window.blit(highlights, (0,0))
 
