@@ -11,9 +11,9 @@ board = pygame.image.load(join(PATH, 'board.png'))
 
 flipped_board = pygame.transform.flip(board, True, False)
 
-notation = {}
-notation[True] = pygame.Surface(board.get_size(), pygame.SRCALPHA)
-notation[False] = pygame.Surface(board.get_size(), pygame.SRCALPHA)
+coords = {}
+coords[True] = pygame.Surface(board.get_size(), pygame.SRCALPHA)
+coords[False] = pygame.Surface(board.get_size(), pygame.SRCALPHA)
 
 for i in range(8):
   wn = font.render(str(8 - i), True, (255,255,255))
@@ -22,13 +22,13 @@ for i in range(8):
   bc = font.render(chr(104 - i), True, (255,255,255))
   x, y = wn.get_size()
   offset = (y - x) // 3
-  notation[True].blit(wn, (8 * TILE_SIZE - x - offset, i * TILE_SIZE))
-  notation[True].blit(wc, (i * TILE_SIZE + offset, 8 * TILE_SIZE - y))
-  notation[False].blit(bn, (8 * TILE_SIZE - x - offset, i * TILE_SIZE))
-  notation[False].blit(bc, (i * TILE_SIZE + offset, 8 * TILE_SIZE - y))
+  coords[True].blit(wn, (8 * TILE_SIZE - x - offset, i * TILE_SIZE))
+  coords[True].blit(wc, (i * TILE_SIZE + offset, 8 * TILE_SIZE - y))
+  coords[False].blit(bn, (8 * TILE_SIZE - x - offset, i * TILE_SIZE))
+  coords[False].blit(bc, (i * TILE_SIZE + offset, 8 * TILE_SIZE - y))
 
-notation[True].blit(flipped_board, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
-notation[False].blit(flipped_board, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
+coords[True].blit(flipped_board, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
+coords[False].blit(flipped_board, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
 
 pieces = {}
 

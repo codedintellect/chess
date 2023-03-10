@@ -30,6 +30,7 @@ def render_loop():
   resources.board = resources.board.convert()
 
   # GAME LOOP
+  turn = game.board.ply()
   running = True
   while running:
     clock.tick(60)
@@ -48,6 +49,10 @@ def render_loop():
       elif e.type == pygame.MOUSEMOTION:
         if selected is not None and pygame.mouse.get_pressed()[0]:
           update_frame = True
+
+    if turn != game.board.ply():
+      turn = game.board.ply()
+      update_frame = True
 
     if update_frame:
       render(window, game, selected)

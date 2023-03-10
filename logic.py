@@ -5,6 +5,7 @@ class game:
     self.board = chess.Board()
     self.plr_color = chess.WHITE
     self.unexpected_end = False
+    self.two_plr = False
 
   def try_move(self, start, end):
     if self.piece(start).color != self.plr_color:
@@ -12,6 +13,7 @@ class game:
     mv = chess.Move(start, end)
     if mv in self.board.legal_moves:
       self.board.push(mv)
+    if self.two_plr:
       self.plr_color = not self.plr_color # FOR 2-PLR GAMING
 
   def piece(self, sq):

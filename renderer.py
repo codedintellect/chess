@@ -1,6 +1,6 @@
 import pygame
 import resources
-from config import TILE_SIZE
+from config import TILE_SIZE, COORDS
 
 BOARD_SIZE = TILE_SIZE * 8
 game = None
@@ -67,12 +67,8 @@ def render(window, game, selected):
   window.blit(highlights, (0,0))
 
   # RENDER CELL LABELS
-  if True: # TODO: ADD CONFIG
-    window.blit(resources.notation[game.plr_color], (0,0))
-    #if game.plr_color:
-    #  window.blit(resources.for_white, (0,0))
-    #else:
-    #  window.blit(resources.for_black, (0,0))
+  if COORDS:
+    window.blit(resources.coords[game.plr_color], (0,0))
 
   # RENDER PIECES
   render_pieces(window, game, selected)

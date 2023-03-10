@@ -2,6 +2,7 @@ import threading
 import time
 import chess
 import chess.engine
+from config import DIFFICULTY
 
 def analyze_position(game):
   engine = chess.engine.SimpleEngine.popen_uci("./stockfish")
@@ -35,6 +36,22 @@ def analyze_position(game):
 
   engine.quit()
 
+def play(game):
+  engine = chess.engine.SimpleEngine.popen_uci("./stockfish")
+
+  engine.configure({"Skill Level": DIFFICULTY, "Use NNUE": True, "Threads": 1})
+  limit = chess.engine.Limit(time=0.1)
+
+  while not game.board.is_game_over() and not game.unexpected_end:
+    if game.board.turn != game.plr_color:
+      result = engine.play(game.board, limit)
+      game.board.push(result.move)
+
+  engine.quit()
+
 def start(game):
-  thread = threading.Thread(target=analyze_position, args=(game,))
-  thread.start()
+  analysis = threading.Thread(target=analyze_position, args=(game,))
+  analysis.start()
+  if not game.two_plr:
+    player = threading.Thread(target=play, args=(game,))
+    player.start()
