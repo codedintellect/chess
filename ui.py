@@ -37,7 +37,9 @@ def render_loop():
     for e in pygame.event.get():
       # print(pygame.event.event_name(e.type))
       if e.type == pygame.QUIT:
+        game.unexpected_end = True
         running = False
+        break
       elif e.type == pygame.MOUSEBUTTONDOWN or e.type == pygame.MOUSEBUTTONUP:
         update_frame = True
         mouse(e)

@@ -4,6 +4,7 @@ class game:
   def __init__(self):
     self.board = chess.Board()
     self.plr_color = chess.WHITE
+    self.unexpected_end = False
 
   def try_move(self, start, end):
     if self.piece(start).color != self.plr_color:
@@ -22,3 +23,6 @@ class game:
 
   def get_moves(self, sq):
     return filter(lambda x: x.from_square == sq, self.board.legal_moves)
+
+  def resign(self):
+    self.board.resign()
