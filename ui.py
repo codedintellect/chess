@@ -15,7 +15,7 @@ def mouse(e):
   sq = y * 8 + x
   p = game.piece(sq)
   if p == None or not p.color == game.plr_color:
-    if selected:
+    if selected is not None:
       game.try_move(selected, sq)
     selected = None
   elif e.type == pygame.MOUSEBUTTONDOWN:

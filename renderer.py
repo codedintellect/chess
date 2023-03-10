@@ -29,8 +29,8 @@ def render_pieces(window, game, selected):
       window.blit(icon, (x * TILE_SIZE, y * TILE_SIZE))
   if selected is not None and pygame.mouse.get_pressed()[0]:
     icon = resources.pieces[game.piece(selected).symbol()]
-    x, y = pygame.mouse.get_pos()
-    window.blit(icon, (x - TILE_SIZE // 2, y - TILE_SIZE // 3))
+    pos = pygame.mouse.get_pos()
+    window.blit(icon, (pos[0] - TILE_SIZE // 2, pos[1] - TILE_SIZE // 3))
 
 def highlight_rect(surface, sq, color, game, width=0):
   x, y = flip(sq % 8, sq // 8, game)
@@ -55,7 +55,7 @@ def render(window, game, selected):
     highlight_rect(highlights, lm.to_square, last_move_color, game)
 
   # RENDER SELECTED
-  if selected:
+  if selected is not None:
     highlight_rect(highlights, selected, selected_color, game)
     for mv in game.get_moves(selected):
       highlight_circle(highlights, mv.to_square, selected_color, game)
