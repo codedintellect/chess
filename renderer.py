@@ -46,6 +46,9 @@ class renderer:
     c2 = self.center_from_sq(sq2)
     pygame.draw.line(surface, color, c1, c2, TILE_SIZE // 8)
 
+  def threat(self, surface, sq):
+    self.circle(surface, sq, threat_color, TILE_SIZE // 2.2)
+
   def render(self, selected):
     # RENDER BACKBOARD
     self.window.blit(resources.board, (0,0))
@@ -70,6 +73,11 @@ class renderer:
         pos = pygame.mouse.get_pos()
         x, y = self.rotate_board(pos[0] // TILE_SIZE, pos[1] // TILE_SIZE)
         self.rect(highlights, y * 8 + x, hover_color, TILE_SIZE // 16)
+
+    # RENDER CHECK
+    if self.game.board.is_check():
+      sq = self.game.board.king(self.game.board.turn)
+      self.threat(highlights, sq)
 
     self.window.blit(highlights, (0,0))
 
