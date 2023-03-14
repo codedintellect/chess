@@ -27,7 +27,7 @@ def analyze_position(game):
         score = info.get("score").pov(game.plr_color)
         print()
         print("ANALYSIS:")
-        print(f" SCORE: {score}")
+        print(f" SCORE: {score}", end="   \n")
         print(f" BEST MOVE: {bm}")
         print(f" THREAT: {bt}")
         print("\r\033[F\033[F\033[F\033[F\033[F\033[F")
