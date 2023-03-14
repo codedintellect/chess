@@ -13,8 +13,8 @@ class game:
     mv = chess.Move(start, end)
     if mv in self.board.legal_moves:
       self.board.push(mv)
-    if self.two_plr:
-      self.plr_color = not self.plr_color # FOR 2-PLR GAMING
+      if self.two_plr:
+        self.plr_color = not self.plr_color # FOR 2-PLR GAMING
 
   def piece(self, sq):
     return self.board.piece_at(sq)
@@ -26,5 +26,11 @@ class game:
   def get_moves(self, sq):
     return filter(lambda x: x.from_square == sq, self.board.legal_moves)
 
-  def resign(self):
-    self.board.resign()
+  def ended(self):
+    b = self.board
+    return (self.unexpected_end or
+            b.is_checkmate() or
+            b.is_stalemate() or
+            b.is_insufficient_material() or
+            b.is_seventyfive_moves() or
+            b.is_fivefold_repetition())
