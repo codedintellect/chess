@@ -18,18 +18,10 @@ def analyze_position(game):
           break
         if (depth := info.get("depth")) is None or depth < 10:
           continue
-        if (pv := info.get("pv")) is None or len(pv) < 2:
-          break
+        #if (pv := info.get("pv")) is None or len(pv) == 0:
+        if not info.get("pv"):
+          continue
         game.eval = info
-        bm = pv[0]
-        bt = pv[1]
-        score = info.get("score").pov(game.plr_color)
-        print("         ")
-        print("ANALYSIS:", end = "     \n")
-        print(f" SCORE: {score}", end="     \n")
-        print(f" BEST MOVE: {bm}")
-        print(f" THREAT: {bt}")
-        print("\r\033[F\033[F\033[F\033[F\033[F\033[F")
     while turn == game.board.ply() and not game.unexpected_end:
       time.sleep(0.1)
 
