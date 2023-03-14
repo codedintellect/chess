@@ -28,12 +28,12 @@ class renderer:
   def center_from_sq(self, sq):
     return self.corner_from_sq(sq) + pygame.Vector2(TILE_SIZE // 2)
 
-  def highlight_rect(self, surface, sq, color, width=0):
+  def rect(self, surface, sq, color, width=0):
     coords = self.corner_from_sq(sq)
     rect = (coords.x, coords.y, TILE_SIZE, TILE_SIZE)
     pygame.draw.rect(surface, color, rect, width)
 
-  def highlight_circle(self, surface, sq, color):
+  def circle(self, surface, sq, color):
     center = self.center_from_sq(sq)
     pygame.draw.circle(surface, color, center, TILE_SIZE // 7) # Why 7? No idea...
 
@@ -46,18 +46,18 @@ class renderer:
     # RENDER LAST MOVE
     lm = self.game.last_move()
     if lm:
-      self.highlight_rect(highlights, lm.from_square, last_move_color)
-      self.highlight_rect(highlights, lm.to_square, last_move_color)
+      self.rect(highlights, lm.from_square, last_move_color)
+      self.rect(highlights, lm.to_square, last_move_color)
 
     # RENDER SELECTED
     if selected is not None:
-      self.highlight_rect(highlights, selected, selected_color)
+      self.rect(highlights, selected, selected_color)
       for mv in self.game.get_moves(selected):
-        self.highlight_circle(highlights, mv.to_square, selected_color)
+        self.circle(highlights, mv.to_square, selected_color)
       if pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
         x, y = self.rotate_board(pos[0] // TILE_SIZE, pos[1] // TILE_SIZE)
-        self.highlight_rect(highlights, y * 8 + x, hover_color, TILE_SIZE // 16)
+        self.rect(highlights, y * 8 + x, hover_color, TILE_SIZE // 16)
 
     self.window.blit(highlights, (0,0))
 
