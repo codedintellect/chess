@@ -36,6 +36,7 @@ def render_loop():
   # GAME LOOP
   turn = game.board.ply()
   running = True
+  eval = None
   while running:
     clock.tick(60)
     update_frame = False
@@ -56,6 +57,10 @@ def render_loop():
 
     if turn != game.board.ply():
       turn = game.board.ply()
+      update_frame = True
+
+    if eval != game.eval:
+      eval = game.eval
       update_frame = True
 
     if update_frame:

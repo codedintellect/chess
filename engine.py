@@ -20,6 +20,7 @@ def analyze_position(game):
           continue
         if (pv := info.get("pv")) is None or len(pv) < 2:
           break
+        game.eval = info
         bm = pv[0]
         bt = pv[1]
         score = info.get("score").pov(game.plr_color)

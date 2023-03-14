@@ -6,6 +6,7 @@ class game:
     self.plr_color = chess.WHITE
     self.unexpected_end = False
     self.two_plr = False
+    self.eval = None
 
   def try_move(self, start, end):
     if self.piece(start).color != self.plr_color:
