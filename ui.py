@@ -1,17 +1,20 @@
 import pygame
 import threading
 import resources
-from renderer import render, flip
+from renderer import renderer
 from config import TILE_SIZE
 
 BOARD_SIZE = TILE_SIZE * 8
 game = None
 selected = None
 
+def rotate_board(x, y):
+  return (x, 7-y) if game.plr_color else (7-x, y)
+
 def mouse(e):
   global selected
   pos = pygame.mouse.get_pos()
-  x, y = flip(pos[0] // TILE_SIZE, pos[1] // TILE_SIZE, game)
+  x, y = rotate_board(pos[0] // TILE_SIZE, pos[1] // TILE_SIZE)
   sq = y * 8 + x
   p = game.piece(sq)
   if p == None or not p.color == game.plr_color:
@@ -25,6 +28,7 @@ def render_loop():
   clock = pygame.time.Clock()
 
   window = pygame.display.set_mode((BOARD_SIZE, BOARD_SIZE))
+  r = renderer(window, game)
 
   # Make Surface type match to avoid doing it each frame, causing high CPU usage.
   resources.board = resources.board.convert()
@@ -55,7 +59,7 @@ def render_loop():
       update_frame = True
 
     if update_frame:
-      render(window, game, selected)
+      r.render(selected)
       # Update window
       pygame.display.flip()
 
